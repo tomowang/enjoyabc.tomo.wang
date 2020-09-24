@@ -1,0 +1,55 @@
+.jcarousel-wrapper {
+    margin: 0px auto;
+    position: relative;
+    border: 1px solid #D5E7EC;
+}
+
+/** Carousel **/
+
+.jcarousel {
+    position: relative;
+    overflow: hidden;
+    width: 618px;
+    height: 492px;
+}
+
+.jcarousel ul {
+    width: 20000em;
+    position: absolute;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.jcarousel li {
+    float: left;
+}
+
+.jcarousel li img,
+.jcarousel li {
+    width: 618px;
+    height: 492px;
+}
+
+/** Carousel Controls **/
+.jcarousel-nav {
+  border: 0;
+  display: block;
+  font: inherit;
+  margin: 0 auto;
+  padding: 1px 0 0;
+  text-align: center;
+  vertical-align: baseline;
+  width: 100%;
+}
+
+.jcarousel-control-prev,
+.jcarousel-control-next {
+  opacity: 0.75;
+  cursor: pointer;
+}
+
+.jcarousel-control-prev:hover,
+.jcarousel-control-next:hover {
+  opacity: 1;
+}

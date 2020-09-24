@@ -1,0 +1,61 @@
+<!DOCTYPE html><html><head><title>EnjoyABC</title><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta charset="utf-8"><meta name="auther" content="Tomo Wang"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1"><link rel="stylesheet" href="/css/modern.css"><link rel="stylesheet" href="/css/modern-responsive.css"><link rel="stylesheet" href="/css/style.css"><script src="/javascript/jquery-1.9.1.min.js" text="text/javascript"></script><script src="/javascript/jquery-migrate-1.2.1.min.js" text="text/javascript"></script></head><body class="metrouicss"><div class="page thirdary"><div class="logo"><span class="light-blue">Enjoy</span><span class="dark-blue">International</span></div><div class="nav-bar"><div class="nav-bar-inner padding10"><a href="/"><span class="element brand logo">Enjoy<span class="abc">ABC</span></span></a><span class="divider"></span><ul class="menu"><li><a href="/index.html">Home</a></li><li><a href="/articles.html">Articles</a></li><li><a href="/lectures.html">Lecture Calendar</a></li><li><a href="/presentations.html">Presentations</a></li><li><a href="/media.html">Media</a></li><!--li--><!--  a(href="/pictures") Pictures--><li><a href="/contact.html">Contact Us</a></li><li class="place-right"><a href="/login.html">Logoff<i class="icon-arrow-right-3"></i></a></li></ul></div></div><div class="page-region"><div class="page-region-content"><div class="image-container bg-color-blue51 place-left"><img src="/downloads/94882b7dafba45a76a2fcfd8083fa0a1.jpg"><div class="overlay">Ocean
+<br>
+July 31 2014
+<br>
+21.95MB</div><a href="/media/94882b7dafba45a76a2fcfd8083fa0a1.mp4" target="_blank" class="icon-download-2 bottom-right"></a><a href="#" data-uuid="94882b7dafba45a76a2fcfd8083fa0a1" class="icon-cancel top-right"></a></div><a id="upload" href="#" class="place-left bg-color-blue51 icon-plus-2"></a></div></div></div><div id="upload_popup" class="dialog modal"><div class="modal-header">New Media<i class="icon-cancel close"></i></div><div class="modal-content"><div class="alert bg-color-red"><span></span><i class="icon-cancel"></i></div><form id="fileupload" action="/media" method="POST" enctype="multipart/form-data" class="box"><div class="progress-bar"><div class="bar bg-color-red"></div></div><div class="input-control text"><input id="title" name="title" type="text" required="required" placeholder="Title"><button type="button" tabindex="-1" class="helper"></button></div><div class="input-control"><input id="video" name="video" required="required" type="file" accept="video/mp4"></div><button id="uploadbtn" type="submit" class="bg-color-blue fg-color-white">Upload</button><a id="cancel" class="button close bg-color-red fg-color-white">Cancel</a></form></div></div><script src="/javascript/jquery.placeholder.min.js" text="text/javascript"></script><script src="/javascript/jquery.lazyload.min.js" text="text/javascript"></script><script src="/javascript/moment.min.js" text="text/javascript"></script><script src="/javascript/metro/dropdown.js" text="text/javascript"></script><script src="/javascript/metro/accordion.js" text="text/javascript"></script><script src="/javascript/metro/buttonset.js" text="text/javascript"></script><script src="/javascript/metro/carousel.js" text="text/javascript"></script><script src="/javascript/metro/input-control.js" text="text/javascript"></script><script src="/javascript/metro/pagecontrol.js" text="text/javascript"></script><script src="/javascript/metro/rating.js" text="text/javascript"></script><script src="/javascript/metro/slider.js" text="text/javascript"></script><script src="/javascript/metro/tile-slider.js" text="text/javascript"></script><script src="/javascript/metro/dialog.js" text="text/javascript"></script><script src="/javascript/metro/calendar.js" text="text/javascript"></script><script src="/javascript/main.js" text="text/javascript"></script><script src="/javascript/jquery.lightbox_me.js" text="text/javascript"></script><script src="/javascript/jquery.form.js" text="text/javascript"></script><script type="text/javascript">;(function($){
+  $(document).ready(function(e){
+    var popup = $('#upload_popup');
+    $('#upload').click(function(e){
+      $('.alert', popup).hide();
+      popup.lightbox_me();
+    });
+    $('form').ajaxForm({
+      dataType: 'json',
+      beforeSerialize: function($form, options){
+        $('#title', $form).val($.trim($('#title', $form).val()));
+        //$('#embed', $form).val($.trim($('#embed', $form).val()));
+        //if(!$('#title', $form).val() || !$('#embed', $form).val()){
+        if(!$('#title', $form).val() || !$('#video', $form).val()){
+          return false;
+        }
+      },
+      beforeSubmit: function(formData, jqForm, options){
+        var $form = jqForm[0];
+        $('.close', $form).addClass('disabled').attr('disabled', 'disabled');
+        $('.bar', $form).css('width', '0%');
+      },
+      uploadProgress: function(e, position, total, done){
+        $('.bar', popup).css('width', done + '%');
+      },
+      success: function(data){
+        window.location.reload(true);
+      },
+      error: function(jqXHR, textStatus, errorThrown){
+        $('.close', popup).removeAttr('disabled').removeClass('disabled');
+        var rt = jqXHR.responseText
+          , jsrt = {};
+        try{
+          jsrt = $.parseJSON(rt);
+        }catch(e){
+        }
+        if(jsrt.error){
+          $('.alert span', popup).html(jsrt.error);
+          $('.alert', popup).show();
+        }
+      }
+    });
+    $('.alert .icon-cancel').click(function(e){
+      $(this).parent('.alert').hide();
+    });
+    $('a.icon-cancel').click(function(e){
+      var _this = $(this);
+      $.ajax({
+        url: '/media/' + _this.data('uuid'),
+        type: 'DELETE',
+        success: function(data){
+          _this.parent('.image-container').remove();
+        }
+      });
+    });
+  });
+})(jQuery);</script></body></html>

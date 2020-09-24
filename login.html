@@ -1,0 +1,63 @@
+<!DOCTYPE html><html><head><title>EnjoyABC</title><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta charset="utf-8"><meta name="auther" content="Tomo Wang"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1"><link rel="stylesheet" href="/css/modern.css"><link rel="stylesheet" href="/css/modern-responsive.css"><link rel="stylesheet" href="/css/style.css"><script src="/javascript/jquery-1.9.1.min.js" text="text/javascript"></script><script src="/javascript/jquery-migrate-1.2.1.min.js" text="text/javascript"></script></head><body class="metrouicss"><div id="login-page" class="page"><div class="page-header"><div class="page-header-content"><a href="/"><h1 class="fg-color-blue51"><span style="padding-left: 20px;" class="logo">Enj<i style="font-size: 32px;" class="icon-earth"></i>yABC</span></h1></a></div></div><div class="page-region"><div class="page-region-content"><div class="grid"><div class="row"><div class="span5 padding40"><form id="login"><div class="input-control text"><input id="username" name="username" type="text" tabindex="1" required="required" placeholder="Username"><button type="button" tabindex="-1" class="helper"></button></div><div class="input-control password"><input id="password" name="password" type="password" tabindex="2" required="required" placeholder="Password"><button type="button" tabindex="-1" class="helper"></button></div><button id="login" type="submit" class="bg-color-blue51 fg-color-white">Sign In<i class="icon-enter right"></i></button><a id="register" class="button bg-color-blue fg-color-white">Register</a></form></div></div></div></div></div></div><div id="register_box" class="dialog modal"><div class="modal-header">New Account<i class="icon-cancel close"></i></div><div class="modal-content"><div class="alert bg-color-red"><span></span><i class="icon-cancel"></i></div><div class="box"> <div class="input-control text"><input id="username" name="username" type="text" required="required" placeholder="Username"><button type="button" tabindex="-1" class="helper"></button></div><div class="input-control password"><input id="password" name="password" type="password" required="required" placeholder="Password"><button type="button" tabindex="-1" class="helper"></button></div><div class="input-control password"><input id="password2" name="password2" type="password" required="required" placeholder="Comfirm password"><button type="button" tabindex="-1" class="helper"></button></div><button id="create" class="bg-color-blue fg-color-white">Create Account</button><a id="cancel" class="close button bg-color-red fg-color-white">Cancel</a></div></div></div><script src="/javascript/jquery.placeholder.min.js" text="text/javascript"></script><script src="/javascript/jquery.lazyload.min.js" text="text/javascript"></script><script src="/javascript/moment.min.js" text="text/javascript"></script><script src="/javascript/metro/dropdown.js" text="text/javascript"></script><script src="/javascript/metro/accordion.js" text="text/javascript"></script><script src="/javascript/metro/buttonset.js" text="text/javascript"></script><script src="/javascript/metro/carousel.js" text="text/javascript"></script><script src="/javascript/metro/input-control.js" text="text/javascript"></script><script src="/javascript/metro/pagecontrol.js" text="text/javascript"></script><script src="/javascript/metro/rating.js" text="text/javascript"></script><script src="/javascript/metro/slider.js" text="text/javascript"></script><script src="/javascript/metro/tile-slider.js" text="text/javascript"></script><script src="/javascript/metro/dialog.js" text="text/javascript"></script><script src="/javascript/metro/calendar.js" text="text/javascript"></script><script src="/javascript/main.js" text="text/javascript"></script><script src="/javascript/jquery.lightbox_me.js" text="text/javascript"></script><script type="text/javascript">;(function($){
+  $(document).ready(function(e){
+    $('#login').click(function(e){
+      e.preventDefault();
+      window.location.href = '/index.html';
+    });
+    $('#register').click(function(e){
+      $('.alert', $('#register_box')).hide();
+      $('#register_box').lightbox_me();
+    });
+    $('#create').click(function(e){
+      var modal = $('#register_box')
+        , user = {
+        username: $.trim($('#username', modal).val()),
+        password: $('#password', modal).val(),
+        password2: $('#password2', modal).val()
+      }
+        , msg;
+      if(!user.username){
+        $('#username', modal).focus();
+        msg = 'Please enter username';
+      }else if(!user.password){
+        $('#password', modal).focus();
+        msg = 'Please enter password';
+      }else if(!user.password2){
+        $('#password2', modal).focus()
+        msg = 'Please confirm password';
+      }else if(user.password !== user.password2){
+        $('#password2', modal).focus()
+        msg = 'Password did not match';
+      }
+      if(msg){
+        $('.alert span', $('#register_box')).html(msg);
+        $('.alert', $('#register_box')).show();
+        return false;
+      }
+      delete user.password2;
+      $.ajax({
+        url: '/users',
+        dataType: 'json',
+        type: 'post',
+        data: user,
+        success: function(data){
+          window.location.href = '/';
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+          var rt = jqXHR.responseText
+            , jsrt = {error: 'Register failed'};
+          try {
+            jsrt = $.parseJSON(rt);
+          }
+          catch(e) {
+          }
+          $('.alert span', $('#register_box')).html(jsrt.error);
+        }
+      });
+    });
+    $('.alert .icon-cancel').click(function(e){
+      $(this).parent('.alert').hide();
+    });
+  });
+})(jQuery);
+</script></body></html>
